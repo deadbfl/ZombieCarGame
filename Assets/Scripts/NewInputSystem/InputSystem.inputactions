@@ -88,6 +88,54 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "WeaponRotation",
+            "id": "6bc235c5-1144-47df-8174-6b6fc0c80df3",
+            "actions": [
+                {
+                    "name": "MouseInput",
+                    "type": "Value",
+                    "id": "faf3b6f3-b0f4-468f-8a14-1a5c84e179e5",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Shoot",
+                    "type": "Button",
+                    "id": "d2131183-a5b8-474f-89b3-38295ad32c82",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "5f0ab8db-01f5-4312-a67b-d61dcc49d184",
+                    "path": "<Mouse>/delta",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MouseInput",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9979ceff-bf66-43b2-a105-1a499e776711",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Shoot",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []

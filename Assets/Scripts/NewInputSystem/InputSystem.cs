@@ -110,6 +110,54 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""WeaponRotation"",
+            ""id"": ""6bc235c5-1144-47df-8174-6b6fc0c80df3"",
+            ""actions"": [
+                {
+                    ""name"": ""MouseInput"",
+                    ""type"": ""Value"",
+                    ""id"": ""faf3b6f3-b0f4-468f-8a14-1a5c84e179e5"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Shoot"",
+                    ""type"": ""Button"",
+                    ""id"": ""d2131183-a5b8-474f-89b3-38295ad32c82"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""5f0ab8db-01f5-4312-a67b-d61dcc49d184"",
+                    ""path"": ""<Mouse>/delta"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MouseInput"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9979ceff-bf66-43b2-a105-1a499e776711"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Shoot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -120,6 +168,10 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
         m_CarMovement_Backward = m_CarMovement.FindAction("Backward", throwIfNotFound: true);
         m_CarMovement_Left = m_CarMovement.FindAction("Left", throwIfNotFound: true);
         m_CarMovement_Right = m_CarMovement.FindAction("Right", throwIfNotFound: true);
+        // WeaponRotation
+        m_WeaponRotation = asset.FindActionMap("WeaponRotation", throwIfNotFound: true);
+        m_WeaponRotation_MouseInput = m_WeaponRotation.FindAction("MouseInput", throwIfNotFound: true);
+        m_WeaponRotation_Shoot = m_WeaponRotation.FindAction("Shoot", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -247,11 +299,70 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
         }
     }
     public CarMovementActions @CarMovement => new CarMovementActions(this);
+
+    // WeaponRotation
+    private readonly InputActionMap m_WeaponRotation;
+    private List<IWeaponRotationActions> m_WeaponRotationActionsCallbackInterfaces = new List<IWeaponRotationActions>();
+    private readonly InputAction m_WeaponRotation_MouseInput;
+    private readonly InputAction m_WeaponRotation_Shoot;
+    public struct WeaponRotationActions
+    {
+        private @InputSystem m_Wrapper;
+        public WeaponRotationActions(@InputSystem wrapper) { m_Wrapper = wrapper; }
+        public InputAction @MouseInput => m_Wrapper.m_WeaponRotation_MouseInput;
+        public InputAction @Shoot => m_Wrapper.m_WeaponRotation_Shoot;
+        public InputActionMap Get() { return m_Wrapper.m_WeaponRotation; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(WeaponRotationActions set) { return set.Get(); }
+        public void AddCallbacks(IWeaponRotationActions instance)
+        {
+            if (instance == null || m_Wrapper.m_WeaponRotationActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_WeaponRotationActionsCallbackInterfaces.Add(instance);
+            @MouseInput.started += instance.OnMouseInput;
+            @MouseInput.performed += instance.OnMouseInput;
+            @MouseInput.canceled += instance.OnMouseInput;
+            @Shoot.started += instance.OnShoot;
+            @Shoot.performed += instance.OnShoot;
+            @Shoot.canceled += instance.OnShoot;
+        }
+
+        private void UnregisterCallbacks(IWeaponRotationActions instance)
+        {
+            @MouseInput.started -= instance.OnMouseInput;
+            @MouseInput.performed -= instance.OnMouseInput;
+            @MouseInput.canceled -= instance.OnMouseInput;
+            @Shoot.started -= instance.OnShoot;
+            @Shoot.performed -= instance.OnShoot;
+            @Shoot.canceled -= instance.OnShoot;
+        }
+
+        public void RemoveCallbacks(IWeaponRotationActions instance)
+        {
+            if (m_Wrapper.m_WeaponRotationActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IWeaponRotationActions instance)
+        {
+            foreach (var item in m_Wrapper.m_WeaponRotationActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_WeaponRotationActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public WeaponRotationActions @WeaponRotation => new WeaponRotationActions(this);
     public interface ICarMovementActions
     {
         void OnForward(InputAction.CallbackContext context);
         void OnBackward(InputAction.CallbackContext context);
         void OnLeft(InputAction.CallbackContext context);
         void OnRight(InputAction.CallbackContext context);
+    }
+    public interface IWeaponRotationActions
+    {
+        void OnMouseInput(InputAction.CallbackContext context);
+        void OnShoot(InputAction.CallbackContext context);
     }
 }

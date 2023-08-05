@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.InputSystem;
 using UnityEngine;
 
 public class CarMovement : MonoBehaviour
@@ -17,52 +18,52 @@ public class CarMovement : MonoBehaviour
     private bool left = true;
     private bool right = true;
 
-    public void OnForward(UnityEngine.InputSystem.InputAction.CallbackContext context)
+    public void OnForward(InputAction.CallbackContext context)
     {
-        if (context.phase == UnityEngine.InputSystem.InputActionPhase.Performed)
+        if (context.phase == InputActionPhase.Performed)
         {
             forward = true;
             StartCoroutine(AddForceForward());
         }
-        else if (context.phase == UnityEngine.InputSystem.InputActionPhase.Canceled)
+        else if (context.phase == InputActionPhase.Canceled)
         {
             forward = false;
         }
     }
-    public void OnBackward(UnityEngine.InputSystem.InputAction.CallbackContext context)
+    public void OnBackward(InputAction.CallbackContext context)
     {
-        if (context.phase == UnityEngine.InputSystem.InputActionPhase.Performed)
+        if (context.phase == InputActionPhase.Performed)
         {
             backward = true;
             StartCoroutine(AddForceBackward());
         }
-        else if (context.phase == UnityEngine.InputSystem.InputActionPhase.Canceled)
+        else if (context.phase == InputActionPhase.Canceled)
         {
             backward = false;
         }
     }
 
-    public void OnLeft(UnityEngine.InputSystem.InputAction.CallbackContext context)
+    public void OnLeft(InputAction.CallbackContext context)
     {
-        if (context.phase == UnityEngine.InputSystem.InputActionPhase.Performed)
+        if (context.phase == InputActionPhase.Performed)
         {
             left = true;
             StartCoroutine(RotateLeft());
         }
-        else if (context.phase == UnityEngine.InputSystem.InputActionPhase.Canceled)
+        else if (context.phase == InputActionPhase.Canceled)
         {
             left = false;
         }
     }
 
-    public void OnRight(UnityEngine.InputSystem.InputAction.CallbackContext context)
+    public void OnRight(InputAction.CallbackContext context)
     {
-        if (context.phase == UnityEngine.InputSystem.InputActionPhase.Performed)
+        if (context.phase == InputActionPhase.Performed)
         {
             right = true;
             StartCoroutine(RotateRight());
         }
-        else if (context.phase == UnityEngine.InputSystem.InputActionPhase.Canceled)
+        else if (context.phase == InputActionPhase.Canceled)
         {
             right = false;
         }
@@ -115,7 +116,6 @@ public class CarMovement : MonoBehaviour
 
             rotateVector = new Vector3(0, 120, 0);
 
-
             yield return null;
         }
     }
@@ -140,7 +140,7 @@ public class CarMovement : MonoBehaviour
         {
             float difference = movementVector.z - 0;
 
-            movementVector.z -= difference*Time.deltaTime/5;
+            movementVector.z -= difference*Time.deltaTime/3;
         }
     }
 }
