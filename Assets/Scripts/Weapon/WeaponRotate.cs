@@ -6,6 +6,7 @@ using System;
 
 public class WeaponRotate : MonoBehaviour
 {
+
     public RotateVariables body;
     public RotateVariables weapon;
 
@@ -18,10 +19,10 @@ public class WeaponRotate : MonoBehaviour
 
             body.rotateObject.Rotate(0, mouseInput.x * body.rotationSpeed * Time.deltaTime, 0); // body rotate alani
 
-            if (body.rotateObject.eulerAngles.y < body.rotateLimit.x && body.rotateObject.eulerAngles.y > 180)
-                body.rotateObject.transform.eulerAngles = new Vector3(0, body.rotateLimit.x, 0);
-            else if (body.rotateObject.eulerAngles.y > body.rotateLimit.y && body.rotateObject.eulerAngles.y < 180)
-                body.rotateObject.transform.eulerAngles = new Vector3(0, body.rotateLimit.y, 0);
+            //if (body.rotateObject.eulerAngles.y < body.rotateLimit.x && body.rotateObject.eulerAngles.y > 180)
+            //    body.rotateObject.transform.eulerAngles = new Vector3(0, body.rotateLimit.x, 0);
+            //else if (body.rotateObject.eulerAngles.y > body.rotateLimit.y && body.rotateObject.eulerAngles.y < 180)
+            //    body.rotateObject.transform.eulerAngles = new Vector3(0, body.rotateLimit.y, 0);
 
             weapon.rotateObject.Rotate(-mouseInput.y * weapon.rotationSpeed * Time.deltaTime, 0, 0);// weapon rotate alani
 
